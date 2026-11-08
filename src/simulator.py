@@ -1,22 +1,11 @@
 """
-Market Microstructure Simulator and Causal Online Hawkes Jump-Intensity Filter.
-
-Implements Section 2.1 - 2.3 of the manuscript:
-1. Discrete-time self-exciting Hawkes jump process with 300-step stationary burn-in:
-   lambda_t - mu = exp(-beta) * (lambda_{t-1} - mu) + alpha * N_t
-2. Asymmetric Kou (2002) double-exponential jump sizes J_{t,j} with martingale jump
-   compensator k_bar = E[e^J - 1].
-3. GFEX 8-tier statutory daily price-limit distribution ell in [0.07, 0.15] (542 trading days),
-   settlement price truncation F_{t+1} = clip(F*_{t+1}, F_t(1-ell), F_t(1+ell)),
-   and conditional order-book execution lock (p_lock = 1/7).
-4. Optional censoring-drift neutralization (recentering truncated returns so E[F_T] = F_0)
-   for the R-01 / M-1 martingale audit.
-5. Causal limit-augmented threshold-Hawkes intensity proxy hat{lambda}_t (Eq. 7-8).
+Hawkes-Kou jump-diffusion futures simulator with GFEX price-limit truncation,
+directional order-book locks, and online threshold-Hawkes intensity filtering.
 """
 
 from __future__ import annotations
-from dataclasses import dataclass, field
-from typing import Dict, Optional, Tuple
+from dataclasses import dataclass
+from typing import Dict, Optional
 import math
 import numpy as np
 
@@ -155,20 +144,19 @@ def simulate_market_paths(
     decay = math.exp(-cfg.beta_decay)
     k_bar = cfg.kou_compensator_k_bar
 
-    # 1. Draw pathwise price-limit ratio ell_i
+    # Draw pathwise daily price-limit ratio ell_i
     if cfg.uniform_limit is not None:
         limit_ratio = np.full(N, float(cfg.uniform_limit), dtype=np.float64)
     else:
         probs = GFEX_LIMIT_PROBS / GFEX_LIMIT_PROBS.sum()
         limit_ratio = rng.choice(GFEX_LIMIT_TIERS, size=N, p=probs)
 
-    # 2. Stationary burn-in for Hawkes intensity lambda_t (300 steps = 60 relaxation lifetimes)
+    # Stationary burn-in for Hawkes intensity lambda_t (300 steps)
     lam_curr = np.full(N, mu, dtype=np.float64)
     for _ in range(burn):
         n_burn = rng.poisson(lam_curr)
         lam_curr = mu + decay * (lam_curr - mu) + alpha * n_burn
 
-    # 3. Allocate arrays over t = 0..T
     F = np.ones((N, T + 1), dtype=np.float64) * cfg.f0
     F_unclipped = np.ones((N, T + 1), dtype=np.float64) * cfg.f0
     lam_true = np.zeros((N, T + 1), dtype=np.float64)

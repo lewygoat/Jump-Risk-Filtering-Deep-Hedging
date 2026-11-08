@@ -1,17 +1,6 @@
 """
-Policy Networks for Microstructure-Aware Deep Hedging and Distributional Actor-Critic (D4PG-QR).
-
-Implements Section 3.2 - 3.3 of the manuscript:
-1. DirectPolicy: [128, 128] ReLU MLP mapping causal state vector x_t in R^d to target hedge
-   delta_t^{target} = delta_max * tanh(f_psi(x_t)) (Eq. 11).
-2. BandPolicy: Multiplicative jump-intensity-modulated no-trade band architecture (Eq. 12-13):
-   - Center network f_psi(x_t): [128, 128] ReLU MLP -> c_t = delta_max * tanh(f_psi(x_t))
-   - Baseline half-width network g_phi(x_{t,-lambda}): [32, 32] ReLU MLP (output weights=0, bias=-3.0)
-   - Learnable scalar modulation parameter theta in R (initialized at theta_0 = 0.0):
-     w_t(x_t) = softplus(g_phi(x_{t,-lambda})) * exp(theta * hat{lambda}_t)
-   - Soft-projection operator:
-     soft_proj(u, w) = -ReLU(u - w) + ReLU(-u - w)
-3. QuantileCritic: Distributional critic with M_q = 51 quantile atoms for D4PG-QR (Eq. 15).
+Neural policy architectures for Deep Hedging (DirectPolicy, multiplicative BandPolicy)
+and distributional quantile critic (QuantileCritic for D4PG-QR).
 """
 
 from __future__ import annotations

@@ -1,18 +1,10 @@
 """
-Differentiable Two-Instrument Futures + Rolling Short-Dated ATM Option Environment (TorchHedgeEnvOpt).
-
-Implements Section 3.1.2 and Section 4.4 of the manuscript:
-- Rolling short-dated ATM call option with time-to-maturity tau_h = 20.0 days (TAU_H = 20.0)
-  and position bound eta_t in [-2.0, 2.0].
-- Opens at day t at V_{open,t} = C_{B76}(F_t, F_t, tau_h, sigma_{imp,t}) and closes at day t+1 at
-  V_{close,t+1} = C_{B76}(F_{t+1}, F_t, tau_h - 1, sigma_{imp,t+1}).
-- Supports dynamic jump-driven implied volatility:
-  sigma_{imp,t} = sigma_{imp,0} * (1 + kappa_iv * hat{lambda}_t) for kappa_iv in {0.0, 2.0, 5.0}.
-- Supports option proportional cost multipliers c_opt / c in {1x, 5x, 10x}.
+Differentiable two-instrument futures and rolling 20-day ATM call option hedging
+environment (TorchHedgeEnvOpt) with dynamic implied volatility and cost multipliers.
 """
 
 from __future__ import annotations
-from typing import Dict, Optional, Tuple
+from typing import Dict
 import torch
 import torch.nn as nn
 from .pricing76 import b76_call_price_torch, b76_delta_torch, b76_gamma_torch

@@ -3,6 +3,8 @@
 Official PyTorch implementation, semi-synthetic market microstructure simulator, archived multi-seed evaluation tables, unit tests, and manuscript compilation package for the paper:
 
 > **"When Does Jump-Risk Filtering Matter for Commodity Derivatives Deep Hedging? A Semi-Synthetic Simulation Audit of Jump-Modulated No-Trade Bands, Price-Limit Locks, and Option-Gamma Spanning"**
+>
+> **Official Repository:** [https://github.com/lewygoat/Jump-Risk-Filtering-Deep-Hedging](https://github.com/lewygoat/Jump-Risk-Filtering-Deep-Hedging)
 
 ---
 

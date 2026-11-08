@@ -1,18 +1,10 @@
 """
-Differentiable Single-Instrument Futures Hedging Environment (TorchHedgeEnv).
-
-Implements Section 2.2 and Section 3.1.1 of the manuscript:
-- Directional execution freeze on price-limit lock days (Eq. 6):
-  * Upper-limit lock (locked_up_t = 1): delta_t^{exec} = min(delta_t^{target}, delta_{t-1}^{exec})
-  * Lower-limit lock (locked_dn_t = 1): delta_t^{exec} = max(delta_t^{target}, delta_{t-1}^{exec})
-  * Partial order fill relaxation pi_fill in {0.0, 0.1, 0.3}
-- Cumulative pathwise unexecuted lock-step hedging gap (LockGap, Eq. 7)
-- Wealth accounting (Eq. 9):
-  C_t^{fut}, G_t^{fut}, W_t = P_0 - V_t + G_t^{fut} - C_t^{fut}, L_T = -W_T / F_0.
+Differentiable single-instrument futures hedging environment (TorchHedgeEnv)
+with directional price-limit lock freezes and LockGap accounting.
 """
 
 from __future__ import annotations
-from typing import Dict, Optional
+from typing import Dict, Optional, Tuple
 import torch
 import torch.nn as nn
 from .pricing76 import b76_call_price_torch, b76_delta_torch

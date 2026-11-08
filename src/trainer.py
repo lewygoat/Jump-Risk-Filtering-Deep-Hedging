@@ -1,17 +1,10 @@
 """
-Risk Objectives, End-to-End BPTT Trainer, and Statistical Inference Utilities.
-
-Implements Section 3.3 and Section 4.1(4) of the manuscript:
-- Rockafellar-Uryasev (2000) CVaR_alpha objective (Eq. 14):
-  J_{CVaR}(Theta, b) = b + 1 / ((1 - alpha) * B) * sum_i max(L_T^{(i)} - b, 0)
-- Symmetric Mean-Variance objective (Eq. 15):
-  J_{MV}(Theta; lambda_{MV}) = E[L_T] + (lambda_{MV} / 2) * Var(L_T)
-- Paired Student's t-test, Wilcoxon signed-rank test, 10,000-resample paired bootstrap CI,
-  Holm-Bonferroni step-down adjusted p-values (p_holm), and 80%-power Minimum Detectable Effect (MDE_80%).
+Rockafellar-Uryasev CVaR and Mean-Variance objectives, Holm-Bonferroni step-down
+multiple-testing adjustment, and Minimum Detectable Effect (MDE_80%) utilities.
 """
 
 from __future__ import annotations
-from typing import Dict, List, Sequence, Tuple
+from typing import List, Sequence, Tuple
 import math
 import numpy as np
 from scipy import stats

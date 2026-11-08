@@ -1,12 +1,6 @@
 """
-Black-76 Futures Option Valuation, Implied Volatility Inversion, and Practitioner Greeks.
-
-Implements Section 3.1 of the manuscript:
-- Fair empirical option premium: P_0 = E[max(F_T - K, 0)]
-- Black-76 call price: C_{B76}(F, K, tau, sigma)
-- Implied volatility inversion: sigma_imp = C_{B76}^{-1}(F_0, K, T, P_0)
-- Analytical Greeks: Delta_{B76}, Gamma_{B76}, Leland volatility-adjusted Delta,
-  and Whalley-Wilmott (1997) asymptotic cubic-root no-trade band half-width.
+Black-76 futures option valuation, implied volatility inversion, and analytical Greeks
+(B76-Delta, Leland volatility-adjusted Delta, and Whalley-Wilmott no-trade bands).
 """
 
 from __future__ import annotations
