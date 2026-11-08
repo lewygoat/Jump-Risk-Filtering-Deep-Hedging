@@ -1,0 +1,114 @@
+{
+  "study_metadata": {
+    "title": "When Does Jump-Risk Filtering Matter for Commodity Derivatives Deep Hedging? A Semi-Synthetic Simulation Audit of Jump-Modulated No-Trade Bands, Price-Limit Locks, and Option-Gamma Spanning",
+    "calibration_instrument": "Guangzhou Futures Exchange (GFEX) Front-Month Lithium Carbonate (LC) Futures",
+    "calibration_window": {
+      "start_date": "2023-07-24",
+      "end_date": "2025-10-20",
+      "trading_days": 542,
+      "non_roll_return_observations": 534,
+      "raw_return_std": 0.02038,
+      "excess_kurtosis": 2.078,
+      "skewness": 0.113,
+      "p99_abs_return": 0.0624,
+      "mad_volatility": 0.01465,
+      "trimmed_5pct_diffusive_sigma": 0.016144,
+      "limit_hit_days": 7,
+      "full_day_locks": 1,
+      "tail_events_gt_3sigma": 10
+    },
+    "seeds": {
+      "tuning_seeds": [8001, 8002, 8003],
+      "formal_training_seeds": [9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008, 9009, 9010],
+      "initial_pilot_subset": [9001, 9002, 9003, 9004, 9005]
+    }
+  },
+  "market_regimes": {
+    "S4_benchmark": {
+      "n_paths": 100000,
+      "horizon_days": 60,
+      "sim_steps": 61,
+      "burn_in_steps": 300,
+      "f0": 1.0,
+      "strike_k": 1.0,
+      "sigma_diffusive": 0.016144,
+      "lambda_bar": 0.04,
+      "branching_ratio_n": 0.3,
+      "beta_decay": 0.20,
+      "mu_base": 0.028,
+      "alpha_excite": 0.054380686,
+      "kou_p_up": 0.4,
+      "kou_eta_up": 40.0,
+      "kou_eta_dn": 25.0,
+      "p_lock_given_hit": 0.14285714285714285,
+      "fair_p0": 0.058595,
+      "sigma_imp_daily": 0.018822,
+      "untruncated_e_ft": 1.0004,
+      "truncated_e_ft": 1.0029,
+      "limit_tiers": {
+        "0.07": 0.1605,
+        "0.08": 0.2140,
+        "0.09": 0.0166,
+        "0.10": 0.5148,
+        "0.11": 0.0129,
+        "0.12": 0.0055,
+        "0.13": 0.0683,
+        "0.15": 0.0074
+      }
+    },
+    "S5_extreme_stress": {
+      "n_paths": 20000,
+      "horizon_days": 60,
+      "sim_steps": 61,
+      "burn_in_steps": 300,
+      "f0": 1.0,
+      "strike_k": 1.0,
+      "sigma_diffusive": 0.016144,
+      "lambda_bar": 0.04,
+      "branching_ratio_n": 0.6,
+      "beta_decay": 0.20,
+      "mu_base": 0.016,
+      "alpha_excite": 0.108761372,
+      "kou_p_up": 0.4,
+      "kou_eta_up": 26.666666666666668,
+      "kou_eta_dn": 16.666666666666668,
+      "jump_scale_multiplier": 1.5,
+      "uniform_limit_ratio": 0.07,
+      "p_lock_given_hit": 0.14285714285714285,
+      "fair_p0": 0.064603,
+      "sigma_imp_daily": 0.020756,
+      "truncated_e_ft": 1.0162
+    }
+  },
+  "training_hyperparameters": {
+    "precision": "float64",
+    "cvar_alpha": 0.95,
+    "futures_cost_c": 0.0001,
+    "option_cost_c_opt": 0.0001,
+    "delta_max": 1.5,
+    "eta_max": 2.0,
+    "rolling_option_tau_h": 20.0,
+    "bptt_dh": {
+      "batch_size": 1024,
+      "actor_lr": 0.0003,
+      "grad_clip": 5.0,
+      "formal_updates": 8000,
+      "val_eval_interval": 500,
+      "val_paths": 10000,
+      "mlp_hidden": [128, 128],
+      "band_mlp_hidden": [32, 32],
+      "band_bias_init": -3.0,
+      "theta_init": 0.0
+    },
+    "d4pg_qr": {
+      "quantile_atoms_mq": 51,
+      "huber_kappa": 1.0,
+      "actor_lr": 0.0003,
+      "critic_lr": 0.001,
+      "polyak_tau": 0.005,
+      "replay_buffer_size": 100000,
+      "batch_size": 256,
+      "collapse_threshold_cvar95": 0.10
+    }
+  }
+}
